@@ -16,25 +16,25 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final TextEditingController emailcontroller = TextEditingController();
-  final TextEditingController passwordcontroller = TextEditingController();
-  final TextEditingController biocontroller = TextEditingController();
-  final TextEditingController usernamecontroller = TextEditingController();
-  Uint8List? image;
+  final TextEditingController _emailcontroller = TextEditingController();
+  final TextEditingController _passwordcontroller = TextEditingController();
+  final TextEditingController _biocontroller = TextEditingController();
+  final TextEditingController _usernamecontroller = TextEditingController();
+  Uint8List? _image;
 
   @override
   void dispose() {
     super.dispose();
-    emailcontroller.dispose();
-    passwordcontroller.dispose();
-    usernamecontroller.dispose();
-    biocontroller.dispose();
+    _emailcontroller.dispose();
+    _passwordcontroller.dispose();
+    _usernamecontroller.dispose();
+    _biocontroller.dispose();
   }
 
   void selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
-      image = im;
+      _image = im;
     });
   }
 
@@ -59,9 +59,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               Stack(
                 children: [
-                  image != null
+                  _image != null
                       ? CircleAvatar(
-                          radius: 64, backgroundImage: MemoryImage(image!))
+                          radius: 64, backgroundImage: MemoryImage(_image!))
                       : CircleAvatar(
                           radius: 64,
                           backgroundImage: NetworkImage(
@@ -83,21 +83,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 32,
               ),
               TextFieldInput(
-                  textEditingController: usernamecontroller,
+                  textEditingController: _usernamecontroller,
                   hintText: "Enter Your User Name",
                   textInputType: TextInputType.text),
               SizedBox(
                 height: 32,
               ),
               TextFieldInput(
-                  textEditingController: emailcontroller,
+                  textEditingController: _emailcontroller,
                   hintText: "Enter Email Address",
                   textInputType: TextInputType.emailAddress),
               SizedBox(
                 height: 32,
               ),
               TextFieldInput(
-                textEditingController: passwordcontroller,
+                textEditingController: _passwordcontroller,
                 hintText: "Enter Password",
                 textInputType: TextInputType.text,
                 isPass: true,
@@ -106,7 +106,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 32,
               ),
               TextFieldInput(
-                  textEditingController: biocontroller,
+                  textEditingController: _biocontroller,
                   hintText: "Enter Your Bio",
                   textInputType: TextInputType.text),
               SizedBox(
@@ -115,11 +115,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               InkWell(
                 onTap: () async {
                   String res = await AuthController().signUpUser(
-                    email: emailcontroller.text,
-                    password: passwordcontroller.text,
-                    bio: biocontroller.text,
-                    username: usernamecontroller.text,
-                    // file:
+                    email: _emailcontroller.text,
+                    password: _passwordcontroller.text,
+                    bio: _biocontroller.text,
+                    username: _usernamecontroller.text,
+                    file: _image!,
                   );
                   print(res);
                 },
