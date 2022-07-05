@@ -28,7 +28,7 @@ class AuthController {
 
         String photoUrl = await StorageMethods()
             .uploadImageToStorage('profilePics', file, false);
-        await _firestore.collection('user').doc(cred.user!.uid).set({
+        await _firestore.collection('users').doc(cred.user!.uid).set({
           'username': username,
           'uid': cred.user!.uid,
           'email': email,
@@ -37,8 +37,37 @@ class AuthController {
           'following': [],
           'photoUrl': photoUrl,
         });
-        res = "Success";
+        res = "success";
       }
+      // } on FirebaseAuthException catch (err) {
+      //   if (err.code == 'Invalid-email') {
+      //     res = 'The Email Is Badly Formated';
+      //   } else if (err.code == 'weak-password') {
+      //     res = 'Password Should Be atleast 8 charecters';
+      //   }
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = 'Some Error Occured';
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        res = 'success';
+      } else {
+        res = 'Please Enter All The Fields';
+      }
+      // } on FirebaseAuthException catch (e) {
+      //   if (e.code == 'user-not-found') {
+
+      //   }
     } catch (err) {
       res = err.toString();
     }

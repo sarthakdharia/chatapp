@@ -1,5 +1,7 @@
-import 'package:chatapp/screens/signup_screen.dart';
+import 'package:chatapp/controllers/auth_controler.dart';
+import 'package:chatapp/screens/authentication/signup_screen.dart';
 import 'package:chatapp/utils/colors.dart';
+import 'package:chatapp/utils/utils.dart';
 import 'package:chatapp/widgets/text_field_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,14 +14,30 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailcontroller = TextEditingController();
-  final TextEditingController passwordcontroller = TextEditingController();
+  final TextEditingController _emailcontroller = TextEditingController();
+  final TextEditingController _passwordcontroller = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
     super.dispose();
-    emailcontroller.dispose();
-    passwordcontroller.dispose();
+    _emailcontroller.dispose();
+    _passwordcontroller.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthController().loginUser(
+        email: _emailcontroller.text, password: _passwordcontroller.text);
+    if (res == "success") {
+    } else {
+      showSnackBar(context, res);
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -45,14 +63,14 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 64,
           ),
           TextFieldInput(
-              textEditingController: emailcontroller,
+              textEditingController: _emailcontroller,
               hintText: "Enter Email Address",
               textInputType: TextInputType.emailAddress),
           SizedBox(
             height: 32,
           ),
           TextFieldInput(
-            textEditingController: passwordcontroller,
+            textEditingController: _passwordcontroller,
             hintText: "Enter Password",
             textInputType: TextInputType.text,
             isPass: true,
@@ -61,8 +79,15 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 32,
           ),
           InkWell(
+            onTap: loginUser,
             child: Container(
-              child: Text("Login"),
+              child: _isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : Text("Login"),
               width: double.infinity,
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(vertical: 12),
