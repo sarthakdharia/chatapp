@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:chatapp/firebase_options.dart';
 import 'package:chatapp/responsive/mobilescreenlayout.dart';
 import 'package:chatapp/responsive/responsive_layout.dart';

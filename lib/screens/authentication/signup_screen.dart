@@ -1,6 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:chatapp/controllers/auth_controler.dart';
+import 'package:chatapp/responsive/mobilescreenlayout.dart';
+import 'package:chatapp/responsive/responsive_layout.dart';
+import 'package:chatapp/responsive/webscreenlayout.dart';
+import 'package:chatapp/screens/authentication/login_screen.dart';
 import 'package:chatapp/utils/colors.dart';
 import 'package:chatapp/utils/utils.dart';
 import 'package:chatapp/widgets/text_field_input.dart';
@@ -55,7 +59,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
     if (res != 'success') {
       showSnackBar(context, res);
+    } else {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => Responsivelayout(
+                MobileScreenLayout: MobileScreenLayout(),
+                WebScreenLayout: WebScreenLayout(),
+              )));
     }
+  }
+
+  void NavigatToLoginScreen() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => LoginScreen(),
+    ));
   }
 
   @override
@@ -166,14 +182,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 8),
                   ),
                   GestureDetector(
-                    // onTap: () => Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => SignUpScreen(),
-                    //   ),
-                    // ),
+                    onTap: NavigatToLoginScreen,
                     child: Container(
                       child: const Text(
-                        ' Signup.',
+                        ' Login.',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),

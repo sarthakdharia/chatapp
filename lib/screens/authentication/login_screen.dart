@@ -1,4 +1,7 @@
 import 'package:chatapp/controllers/auth_controler.dart';
+import 'package:chatapp/responsive/mobilescreenlayout.dart';
+import 'package:chatapp/responsive/responsive_layout.dart';
+import 'package:chatapp/responsive/webscreenlayout.dart';
 import 'package:chatapp/screens/authentication/signup_screen.dart';
 import 'package:chatapp/utils/colors.dart';
 import 'package:chatapp/utils/utils.dart';
@@ -32,12 +35,23 @@ class _LoginScreenState extends State<LoginScreen> {
     String res = await AuthController().loginUser(
         email: _emailcontroller.text, password: _passwordcontroller.text);
     if (res == "success") {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => Responsivelayout(
+                MobileScreenLayout: MobileScreenLayout(),
+                WebScreenLayout: WebScreenLayout(),
+              )));
     } else {
       showSnackBar(context, res);
     }
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void NavigatToSignUp() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => SignUpScreen(),
+    ));
   }
 
   @override
@@ -116,11 +130,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 8),
               ),
               GestureDetector(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SignUpScreen(),
-                  ),
-                ),
+                // onTap: () => Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => SignUpScreen(),
+                //   ),
+                // ),
+                onTap: NavigatToSignUp,
                 child: Container(
                   child: const Text(
                     ' Signup.',
